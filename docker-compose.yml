@@ -1,0 +1,32 @@
+version: '3.9'
+
+services:
+  app_prod:
+    build:
+      context: https://github.com/nunsez/docker-nginx-proxy.git#master
+      dockerfile: services/prod/Dockerfile.prod
+      args:
+        - BUNDLER_VERSION=2.1.4
+    environment:
+      - RAILS_ENV=development
+    networks:
+      - nginx
+
+  app_dev:
+    build:
+      context: https://github.com/nunsez/docker-nginx-proxy.git#dev
+      dockerfile: services/dev/Dockerfile.dev
+      args:
+        - BUNDLER_VERSION=2.1.4
+    environment:
+      - RAILS_ENV=development
+    networks:
+      - nginx
+
+  nginx:
+    build:
+      context: services/nginx
+      dockerfile: Dockerfile
+    ports:
+      - 4000:4000
+      - 5000:5000
