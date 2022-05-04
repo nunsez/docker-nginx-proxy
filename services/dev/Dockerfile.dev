@@ -23,3 +23,5 @@ ENV APP_PATH="/app"
 WORKDIR ${APP_PATH}
 
 COPY . .
+
+CMD ["make", "start"]
