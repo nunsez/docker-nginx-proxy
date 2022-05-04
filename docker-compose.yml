@@ -3,40 +3,52 @@ version: '3.9'
 services:
   app_prod:
     build:
+      # context: .
       context: https://github.com/nunsez/docker-nginx-proxy.git#master
       dockerfile: services/prod/Dockerfile.prod
       args:
         - BUNDLER_VERSION=2.1.4
-    command: bundle exec rails server -b 0.0.0.0
-    environment:
-      - RAILS_ENV=development
-    networks:
-      - nginx
-    depends_on:
-      - nginx
+    command:
+      - make
+      - start-production
+    volumes:
+      - bundle_cache:/usr/local/bundle
+    # networks:
+    #   - nginx
 
   app_dev:
     build:
+      # context: .
       context: https://github.com/nunsez/docker-nginx-proxy.git#dev
       dockerfile: services/dev/Dockerfile.dev
       args:
         - BUNDLER_VERSION=2.1.4
-    command: bundle exec rails server -b 0.0.0.0
-    environment:
-      - RAILS_ENV=development
-    networks:
-      - nginx
-    depends_on:
-      - nginx
+    command:
+      - make
+      - start
+    volumes:
+      - bundle_cache:/usr/local/bundle
+    # networks:
+    #   - nginx
 
   nginx:
     build:
-      context: .
-      # context: https://github.com/nunsez/docker-nginx-proxy.git#master
+      # context: .
+      context: https://github.com/nunsez/docker-nginx-proxy.git#master
       dockerfile: services/nginx/Dockerfile
     ports:
-      - 4000:4000
-      - 5000:5000
+      - 6666:7777
+      - 8888:9999
+    links:
+      - app_dev
+      - app_prod
+    # networks:
+    #   - nginx
 
-networks:
-  nginx:
+volumes:
+  bundle_cache:
+    driver: local
+
+# networks:
+#   nginx:
+#     driver: bridge
