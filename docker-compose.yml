@@ -3,37 +3,22 @@ version: '3.9'
 services:
   app_prod:
     build:
-      # context: .
       context: https://github.com/nunsez/docker-nginx-proxy.git#master
       dockerfile: services/prod/Dockerfile.prod
       args:
         - BUNDLER_VERSION=2.1.4
-    command:
-      - make
-      - start-production
-    volumes:
-      - bundle_cache:/usr/local/bundle
-    # networks:
-    #   - nginx
 
   app_dev:
     build:
-      # context: .
       context: https://github.com/nunsez/docker-nginx-proxy.git#dev
       dockerfile: services/dev/Dockerfile.dev
       args:
         - BUNDLER_VERSION=2.1.4
-    command:
-      - make
-      - start
     volumes:
       - bundle_cache:/usr/local/bundle
-    # networks:
-    #   - nginx
 
   nginx:
     build:
-      # context: .
       context: https://github.com/nunsez/docker-nginx-proxy.git#master
       dockerfile: services/nginx/Dockerfile
     ports:
@@ -42,13 +27,7 @@ services:
     links:
       - app_dev
       - app_prod
-    # networks:
-    #   - nginx
 
 volumes:
   bundle_cache:
     driver: local
-
-# networks:
-#   nginx:
-#     driver: bridge
