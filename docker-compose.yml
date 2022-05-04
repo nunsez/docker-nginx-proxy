@@ -11,6 +11,8 @@ services:
       - RAILS_ENV=development
     networks:
       - nginx
+    depends_on:
+      - nginx
 
   app_dev:
     build:
@@ -21,6 +23,8 @@ services:
     environment:
       - RAILS_ENV=development
     networks:
+      - nginx
+    depends_on:
       - nginx
 
   nginx:
