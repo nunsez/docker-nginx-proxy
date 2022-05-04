@@ -22,4 +22,11 @@ RUN gem install bundler --version "${BUNDLER_VERSION}"
 ENV APP_PATH="/app"
 WORKDIR ${APP_PATH}
 
+COPY Gemfile .
+COPY Gemfile.lock .
+
+RUN bundle install --jobs $(nproc)
+
 COPY . .
+
+CMD ["make", "start-production"]
