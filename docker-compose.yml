@@ -25,8 +25,8 @@ services:
 
   nginx:
     build:
-      context: services/nginx
-      dockerfile: Dockerfile
+      context: https://github.com/nunsez/docker-nginx-proxy.git#master
+      dockerfile: services/nginx/Dockerfile
     ports:
       - 4000:4000
       - 5000:5000
