@@ -11,7 +11,8 @@ RUN apt-get update && apt-get install --yes \
     make \
     openssl \
     pkg-config \
-    tzdata
+    tzdata \
+    && rm -rf /var/lib/apt/lists/*
 
 ARG BUNDLER_VERSION
 ENV BUNDLER_VERSION=${BUNDLER_VERSION}
