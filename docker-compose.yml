@@ -7,6 +7,7 @@ services:
       dockerfile: services/prod/Dockerfile.prod
       args:
         - BUNDLER_VERSION=2.1.4
+    command: bundle exec rails server -b 0.0.0.0
     environment:
       - RAILS_ENV=development
     networks:
@@ -20,6 +21,7 @@ services:
       dockerfile: services/dev/Dockerfile.dev
       args:
         - BUNDLER_VERSION=2.1.4
+    command: bundle exec rails server -b 0.0.0.0
     environment:
       - RAILS_ENV=development
     networks:
@@ -29,7 +31,8 @@ services:
 
   nginx:
     build:
-      context: https://github.com/nunsez/docker-nginx-proxy.git#master
+      context: .
+      # context: https://github.com/nunsez/docker-nginx-proxy.git#master
       dockerfile: services/nginx/Dockerfile
     ports:
       - 4000:4000
