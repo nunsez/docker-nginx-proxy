@@ -15,3 +15,9 @@ start-production: stop-server
 
 docker-clean-builds:
 	docker rmi $(shell docker images --filter "dangling=true" --quiet)
+
+deploy:
+	docker stack deploy nginx-deploy --compose-file swarm-deploy.yml --prune --resolve-image always
+
+deploy-update:
+	docker service update nginx-deploy_app --image test_app_image --force
