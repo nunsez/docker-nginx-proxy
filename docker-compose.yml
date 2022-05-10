@@ -2,14 +2,15 @@ version: '3.9'
 
 services:
   app:
+    image: test_app_image
     build:
       context: https://github.com/nunsez/docker-nginx-proxy.git#master
       dockerfile: services/production/Dockerfile.production
       args:
         - BUNDLER_VERSION=2.1.4
-    networks:
-      apps_net:
-        ipv4_address: 10.5.0.50
+    # networks:
+    #   apps_net:
+    #     ipv4_address: 10.5.0.50
 
   app_staging:
     build:
@@ -19,27 +20,28 @@ services:
         - BUNDLER_VERSION=2.1.4
     volumes:
       - bundle_cache:/usr/local/bundle
-    networks:
-      apps_net:
-        ipv4_address: 10.5.0.10
+  #   networks:
+  #     apps_net:
+  #       ipv4_address: 10.5.0.10
 
   nginx:
+    image: test_nginx_image
     build:
       context: https://github.com/nunsez/docker-nginx-proxy.git#master
       dockerfile: services/nginx/Dockerfile
     ports:
       - 80:80
-    networks:
-      - apps_net
+    # networks:
+    #   - apps_net
 
 volumes:
   bundle_cache:
     driver: local
 
-networks:
-  apps_net:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 10.5.0.0/16
-          gateway: 10.5.0.1
+# networks:
+#   apps_net:
+#     driver: bridge
+#     ipam:
+#       config:
+#         - subnet: 10.5.0.0/16
+          # gateway: 10.5.0.1
