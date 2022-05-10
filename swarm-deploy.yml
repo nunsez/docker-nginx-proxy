@@ -1,0 +1,29 @@
+version: '3.9'
+
+services:
+  app:
+    image: test_app_image
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        order: start-first
+        failure_action: rollback
+        delay: 10s
+      rollback_config:
+        parallelism: 0
+        order: stop-first
+    healthcheck:
+      test: curl -S http://127.0.0.1:3000 || echo 1
+      interval: 30s
+      timeout: 3s
+      retries: 2
+
+  nginx:
+    image: test_nginx_image
+    ports:
+      - 80:80
+
+volumes:
+  bundle_cache:
+    driver: local
